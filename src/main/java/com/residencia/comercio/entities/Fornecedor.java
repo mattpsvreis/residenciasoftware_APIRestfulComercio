@@ -1,26 +1,20 @@
 package com.residencia.comercio.entities;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "fornecedor")
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class,
-    property = "idFornecedor")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idFornecedor")
 public class Fornecedor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +22,8 @@ public class Fornecedor {
 	private Integer idFornecedor;
 
 	@Column(name = "cnpj")
-	//@NotEmpty(message = "O número do CNPJ não pode ficar em branco.")
-	//@Digits(message="O CNPJ deve conter 14 números.", fraction = 0, integer = 14)
+//	@NotEmpty(message = "O número do CNPJ não pode ficar em branco.")
+//	@Digits(message="O CNPJ deve conter 14 números.", fraction = 0, integer = 14)
 	private Integer cnpj;
 
 	@Column(name = "tipo")
@@ -37,47 +31,47 @@ public class Fornecedor {
 
 	@Column(name = "razao_social")
 	private String razaoSocial;
-	
+
 	@Column(name = "uf")
 	private String uf;
-	
+
 	@Column(name = "telefone")
 	private String telefone;
-	
+
 	@Column(name = "email")
 	private String email;
-	
+
 	@Column(name = "nome_fantasia")
 	private String nomeFantasia;
-	
+
 	@Column(name = "status_situacao")
 	private String statusSituacao;
-	
+
 	@Column(name = "bairro")
 	private String bairro;
-	
+
 	@Column(name = "logradouro")
 	private String logradouro;
-	
+
 	@Column(name = "numero")
 	private Integer numero;
-	
+
 	@Column(name = "complemento")
 	private String complemento;
-	
+
 	@Column(name = "cep")
 	private String cep;
-	
+
 	@Column(name = "municipio")
 	private String municipio;
-	
+
 	@Column(name = "data_abertura")
 	private Date dataAbertura;
 
-	//@OneToMany(mappedBy = "fornecedor")
-	//@JsonManagedReference
-	//private List<Produto> produtoList;
-	
+	// @OneToMany(mappedBy = "fornecedor")
+	// @JsonManagedReference
+	// private List<Produto> produtoList;
+
 	public Integer getIdFornecedor() {
 		return idFornecedor;
 	}
@@ -205,5 +199,5 @@ public class Fornecedor {
 	public void setDataAbertura(Date dataAbertura) {
 		this.dataAbertura = dataAbertura;
 	}
-	
+
 }

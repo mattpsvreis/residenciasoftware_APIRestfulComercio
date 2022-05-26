@@ -2,10 +2,6 @@ package com.residencia.comercio.controllers;
 
 import java.util.List;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +20,6 @@ import com.residencia.comercio.entities.Fornecedor;
 import com.residencia.comercio.exceptions.NoSuchElementFoundException;
 import com.residencia.comercio.services.FornecedorService;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-
 @RestController
 @RequestMapping("/fornecedor")
 public class FornecedorController {
@@ -35,25 +28,25 @@ public class FornecedorController {
 
 	@GetMapping
 	public ResponseEntity<List<Fornecedor>> findAllFornecedor() {
-		List<Fornecedor> fornecedorList = fornecedorService.findAllFornecedor();
-		return new ResponseEntity<>(fornecedorList, HttpStatus.OK);
+		return new ResponseEntity<>(fornecedorService.findAllFornecedor(), HttpStatus.OK);
 	}
 
 	@GetMapping("/dto/{id}")
 	public ResponseEntity<FornecedorDTO> findFornecedorDTOById(@PathVariable Integer id) {
-		FornecedorDTO fornecedorDTO = fornecedorService.findFornecedorDTOById(id);
-		return new ResponseEntity<>(fornecedorDTO, HttpStatus.OK);
+		return new ResponseEntity<>(fornecedorService.findFornecedorDTOById(id), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Fornecedor> findFornecedorById(@PathVariable Integer id) {
-		Fornecedor fornecedor = fornecedorService.findFornecedorById(id);
-		if(null == fornecedor)
+		if (fornecedorService.findFornecedorById(id) == null) {
 			throw new NoSuchElementFoundException("Não foi encontrado Fornecedor com o id " + id);
-		else
-			return new ResponseEntity<>(fornecedor, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(fornecedorService.findFornecedorById(id), HttpStatus.OK);
+		}
 	}
-	
+
+	// Meu Deus?????
 	@PostMapping
 	public ResponseEntity<Fornecedor> saveFornecedor(@RequestParam String cnpj) {
 		Fornecedor fornecedor = new Fornecedor();
@@ -63,29 +56,29 @@ public class FornecedorController {
 
 	@PostMapping("/completo")
 	public ResponseEntity<Fornecedor> saveFornecedorCompleto(@RequestBody Fornecedor fornecedor) {
-		Fornecedor novoFornecedor = fornecedorService.saveFornecedor(fornecedor);
-		return new ResponseEntity<>(novoFornecedor, HttpStatus.CREATED);
+		return new ResponseEntity<>(fornecedorService.saveFornecedor(fornecedor), HttpStatus.CREATED);
 	}
-	
+
 	@PostMapping("/dto")
 	public ResponseEntity<FornecedorDTO> saveFornecedorDTO(@RequestBody FornecedorDTO fornecedorDTO) {
-		FornecedorDTO novoFornecedorDTO = fornecedorService.saveFornecedorDTO(fornecedorDTO);
-		return new ResponseEntity<>(novoFornecedorDTO, HttpStatus.CREATED);
+		fornecedorService.saveFornecedorDTO(fornecedorDTO);
+		return new ResponseEntity<>(fornecedorDTO, HttpStatus.CREATED);
 	}
-	
+
 	@PutMapping
 	public ResponseEntity<Fornecedor> updateFornecedor(@RequestBody Fornecedor fornecedor) {
-		Fornecedor novoFornecedor = fornecedorService.updateFornecedor(fornecedor);
-		return new ResponseEntity<>(novoFornecedor, HttpStatus.OK);
+		return new ResponseEntity<>(fornecedorService.updateFornecedor(fornecedor), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteFornecedor(@PathVariable Integer id) {
-		if(null == fornecedorService.findFornecedorById(id))
+		if (fornecedorService.findFornecedorById(id) == null) {
 			return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
-		
-		fornecedorService.deleteFornecedor(id);
-		return new ResponseEntity<>("", HttpStatus.OK);
+		}
+		else {
+			fornecedorService.deleteFornecedor(id);
+			return new ResponseEntity<>("", HttpStatus.OK);
+		}
 	}
 
 }

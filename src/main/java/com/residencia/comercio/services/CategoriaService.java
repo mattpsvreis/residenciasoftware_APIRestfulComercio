@@ -7,70 +7,67 @@ import org.springframework.stereotype.Service;
 
 import com.residencia.comercio.dtos.CategoriaDTO;
 import com.residencia.comercio.entities.Categoria;
+import com.residencia.comercio.exceptions.NoSuchElementFoundException;
 import com.residencia.comercio.repositories.CategoriaRepository;
 
 @Service
 public class CategoriaService {
 	@Autowired
 	CategoriaRepository categoriaRepository;
-	
-	public List<Categoria> findAllCategoria(){
+
+	public List<Categoria> findAllCategoria() {
 		return categoriaRepository.findAll();
 	}
-	
+
 	public Categoria findCategoriaById(Integer id) {
-		return categoriaRepository.findById(id).isPresent() ?
-				categoriaRepository.findById(id).get() : null;
+		return categoriaRepository.findById(id).isPresent() ? categoriaRepository.findById(id).get() : null;
 	}
 
 	public CategoriaDTO findCategoriaDTOById(Integer id) {
-		Categoria categoria = categoriaRepository.findById(id).isPresent() ?
-				categoriaRepository.findById(id).get() : null;
-		
-		CategoriaDTO categoriaDTO = new CategoriaDTO();
-		if(null != categoria) {
-			categoriaDTO = converterEntidadeParaDto(categoria);
+		if (categoriaRepository.findById(id).isPresent() == true) {
+			CategoriaDTO categoriaDTO = converterEntidadeParaDto(categoriaRepository.findById(id).get());
+			return categoriaDTO;
 		}
-		return categoriaDTO;
+		else {
+			throw new NoSuchElementFoundException("Categoria de ID " + id + " não encontrada.");
+		}
 	}
-	
+
 	public Categoria saveCategoria(Categoria categoria) {
 		return categoriaRepository.save(categoria);
 	}
-	
-	public CategoriaDTO saveCategoriaDTO(CategoriaDTO categoriaDTO) {
-			
-		Categoria categoria = new Categoria();
-		
-		categoria.setIdCategoria(categoriaDTO.getIdCategoria());
-		Categoria novoCategoria = categoriaRepository.save(categoria);
-		
-		return converterEntidadeParaDto(novoCategoria);
+
+	public Categoria saveCategoriaDTO(CategoriaDTO categoriaDTO) {
+		return categoriaRepository.save(convertDTOToEntidade(categoriaDTO));
 	}
-	
+
 	public Categoria updateCategoria(Categoria categoria) {
 		return categoriaRepository.save(categoria);
 	}
-	
+
 	public void deleteCategoria(Integer id) {
-		Categoria inst = categoriaRepository.findById(id).get();
-		categoriaRepository.delete(inst);
+		categoriaRepository.delete(categoriaRepository.findById(id).get());
 	}
-	
+
 	public void deleteCategoria(Categoria categoria) {
 		categoriaRepository.delete(categoria);
 	}
-	
-	private Categoria convertDTOToEntidade(CategoriaDTO categoriaDTO){
+
+	private Categoria convertDTOToEntidade(CategoriaDTO categoriaDTO) {
 		Categoria categoria = new Categoria();
-		
+
 		categoria.setIdCategoria(categoriaDTO.getIdCategoria());
+		categoria.setNomeCategoria(categoriaDTO.getNomeCategoria());
+		
 		return categoria;
 	}
-		
+
 	private CategoriaDTO converterEntidadeParaDto(Categoria categoria) {
 		CategoriaDTO categoriaDTO = new CategoriaDTO();
+		
 		categoriaDTO.setIdCategoria(categoria.getIdCategoria());
+		categoriaDTO.setNomeCategoria(categoria.getNomeCategoria());
+		
 		return categoriaDTO;
 	}
 }

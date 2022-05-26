@@ -20,9 +20,4 @@ public class CategoriaDTO {
 		this.nomeCategoria = nomeCategoria;
 	}
 
-	@Override
-	public String toString() {
-		return "CategoriaDTO [idCategoria=" + idCategoria + ", nomeCategoria=" + nomeCategoria + "]";
-	}
-
 }

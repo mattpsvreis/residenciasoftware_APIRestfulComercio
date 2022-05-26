@@ -15,33 +15,36 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @RestControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(Exception.class)
-    public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
-      List<String> details = new ArrayList<>();
-      details.add(ex.getLocalizedMessage());
-      HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-      ErrorResponse error = new ErrorResponse(httpStatus.value(), "Erro Interno no Servidor", details);
-      
-      return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-   
-    @ExceptionHandler(NoSuchElementFoundException.class)
-    public final ResponseEntity<Object> handleUserNotFoundException(NoSuchElementFoundException ex, WebRequest request) {
-      List<String> details = new ArrayList<>();
-      details.add(ex.getLocalizedMessage());
-      HttpStatus httpStatus = HttpStatus.NOT_FOUND;
-      ErrorResponse error = new ErrorResponse(httpStatus.value(), "Registro Não Encontrado", details);
-      return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-    }
-   
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-      List<String> details = new ArrayList<>();
-      for(ObjectError error : ex.getBindingResult().getAllErrors()) {
-        details.add(error.getDefaultMessage());
-      }
-      HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-      ErrorResponse error = new ErrorResponse(httpStatus.value(), "Falha na Validação dos Dados da Requisição", details);
-      return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
+	@ExceptionHandler(Exception.class)
+	public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
+		List<String> details = new ArrayList<>();
+		details.add(ex.getLocalizedMessage());
+		HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		ErrorResponse error = new ErrorResponse(httpStatus.value(), "Erro interno no servidor", details);
+
+		return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@ExceptionHandler(NoSuchElementFoundException.class)
+	public final ResponseEntity<Object> handleUserNotFoundException(NoSuchElementFoundException ex,
+			WebRequest request) {
+		List<String> details = new ArrayList<>();
+		details.add(ex.getLocalizedMessage());
+		HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+		ErrorResponse error = new ErrorResponse(httpStatus.value(), "Registro não encontrado", details);
+		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+	}
+
+	@Override
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		List<String> details = new ArrayList<>();
+		for (ObjectError error : ex.getBindingResult().getAllErrors()) {
+			details.add(error.getDefaultMessage());
+		}
+		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+		ErrorResponse error = new ErrorResponse(httpStatus.value(), "Falha na validação dos dados da requisição",
+				details);
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
 }

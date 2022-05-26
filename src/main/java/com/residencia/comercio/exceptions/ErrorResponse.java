@@ -11,13 +11,11 @@ public class ErrorResponse {
 	private List<String> details;
 
 	public ErrorResponse(int status, String message) {
-		super();
 		this.status = status;
 		this.message = message;
 	}
 
 	public ErrorResponse(int status, String message, List<String> details) {
-		super();
 		this.status = status;
 		this.message = message;
 		this.details = details;

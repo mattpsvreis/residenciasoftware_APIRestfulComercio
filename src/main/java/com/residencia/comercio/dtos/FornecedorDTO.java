@@ -149,14 +149,4 @@ public class FornecedorDTO {
 	public void setDataAbertura(Date dataAbertura) {
 		this.dataAbertura = dataAbertura;
 	}
-
-	@Override
-	public String toString() {
-		return "FornecedorDTO [idFornecedor=" + idFornecedor + ", cnpj=" + cnpj + ", tipo=" + tipo + ", razaoSocial="
-				+ razaoSocial + ", uf=" + uf + ", telefone=" + telefone + ", email=" + email + ", nomeFantasia="
-				+ nomeFantasia + ", statusSituacao=" + statusSituacao + ", bairro=" + bairro + ", logradouro="
-				+ logradouro + ", numero=" + numero + ", complemento=" + complemento + ", cep=" + cep + ", municipio="
-				+ municipio + ", dataAbertura=" + dataAbertura + "]";
-	}
-
 }

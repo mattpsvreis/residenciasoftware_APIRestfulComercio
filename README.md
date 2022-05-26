@@ -1,9 +1,9 @@
-# residencia-20221-api-fornecedor_produto
-API REST utilizando Spring Boot e recursos como validação, consumo de api´s externas, entre outros.
+# API Restful Fornecedor
+API REST utilizando Spring Boot e recursos como validação, consumo de api's externas, entre outros.
 
 ## Descrição
 
-Projeto simples de API REST utilizando o framework Spring
+Projeto simples de API REST utilizando o framework Spring.
 
 ## Script do banco de dados 
 
@@ -61,7 +61,8 @@ As credenciais para acesso ao banco de dados e o nome do contexto da API deverã
 
 ## Sobre
 
-- Author - [Alexandre Paixão]
+- Author - [Alexandre Paixão] - until May 26th, 2022.
+- Author - [Mateus Reis] - since May 26th, 2022.
 
 ## Licença
 
