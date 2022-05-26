@@ -25,7 +25,7 @@ public class CategoriaService {
 
 	public CategoriaDTO findCategoriaDTOById(Integer id) {
 		if (categoriaRepository.findById(id).isPresent() == true) {
-			CategoriaDTO categoriaDTO = converterEntidadeParaDto(categoriaRepository.findById(id).get());
+			CategoriaDTO categoriaDTO = categoriaToDTO(categoriaRepository.findById(id).get());
 			return categoriaDTO;
 		}
 		else {
@@ -38,7 +38,7 @@ public class CategoriaService {
 	}
 
 	public Categoria saveCategoriaDTO(CategoriaDTO categoriaDTO) {
-		return categoriaRepository.save(convertDTOToEntidade(categoriaDTO));
+		return categoriaRepository.save(categoriaDTOtoEntity(categoriaDTO));
 	}
 
 	public Categoria updateCategoria(Categoria categoria) {
@@ -53,7 +53,7 @@ public class CategoriaService {
 		categoriaRepository.delete(categoria);
 	}
 
-	private Categoria convertDTOToEntidade(CategoriaDTO categoriaDTO) {
+	private Categoria categoriaDTOtoEntity(CategoriaDTO categoriaDTO) {
 		Categoria categoria = new Categoria();
 
 		categoria.setIdCategoria(categoriaDTO.getIdCategoria());
@@ -62,7 +62,7 @@ public class CategoriaService {
 		return categoria;
 	}
 
-	private CategoriaDTO converterEntidadeParaDto(Categoria categoria) {
+	private CategoriaDTO categoriaToDTO(Categoria categoria) {
 		CategoriaDTO categoriaDTO = new CategoriaDTO();
 		
 		categoriaDTO.setIdCategoria(categoria.getIdCategoria());

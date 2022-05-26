@@ -32,7 +32,7 @@ public class ProdutoService {
 	}
 
 	public ProdutoDTO findProdutoDTOById(Integer id) {
-		return produtoRepository.findById(id).isPresent() ? converterEntidadeParaDto(produtoRepository.findById(id).get()) : null;
+		return produtoRepository.findById(id).isPresent() ? produtoToDTO(produtoRepository.findById(id).get()) : null;
 	}
 
 	public Produto saveProduto(Produto produto) {
@@ -40,7 +40,7 @@ public class ProdutoService {
 	}
 
 	public Produto saveProdutoDTO(ProdutoDTO produtoDTO) {
-		return produtoRepository.save(convertDTOToEntidade(produtoDTO));
+		return produtoRepository.save(produtoDTOtoEntity(produtoDTO));
 	}
 
 	public Produto updateProduto(Produto produto) {
@@ -55,7 +55,7 @@ public class ProdutoService {
 		produtoRepository.delete(produto);
 	}
 
-	private Produto convertDTOToEntidade(ProdutoDTO produtoDTO) {
+	private Produto produtoDTOtoEntity(ProdutoDTO produtoDTO) {
 		Produto produto = new Produto();
 		
 		if (produtoDTO.getCategoriaId() != null) {
@@ -72,7 +72,7 @@ public class ProdutoService {
 		return produto;
 	}
 
-	private ProdutoDTO converterEntidadeParaDto(Produto produto) {
+	private ProdutoDTO produtoToDTO(Produto produto) {
 		ProdutoDTO produtoDTO = new ProdutoDTO();
 		
 		produtoDTO.setCategoriaId(produto.getCategoria().getIdCategoria());

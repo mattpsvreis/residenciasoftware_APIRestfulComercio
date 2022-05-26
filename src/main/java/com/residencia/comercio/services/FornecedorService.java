@@ -28,7 +28,7 @@ public class FornecedorService {
 
 		FornecedorDTO fornecedorDTO = new FornecedorDTO();
 		if (null != fornecedor) {
-			fornecedorDTO = converterEntidadeParaDto(fornecedor);
+			fornecedorDTO = fornecedorToDTO(fornecedor);
 		}
 		return fornecedorDTO;
 	}
@@ -38,7 +38,7 @@ public class FornecedorService {
 	}
 
 	public Fornecedor saveFornecedorDTO(FornecedorDTO fornecedorDTO) {
-		return fornecedorRepository.save(convertDTOToEntidade(fornecedorDTO));
+		return fornecedorRepository.save(fornecedorDTOtoEntity(fornecedorDTO));
 	}
 
 	public Fornecedor updateFornecedor(Fornecedor fornecedor) {
@@ -53,7 +53,7 @@ public class FornecedorService {
 		fornecedorRepository.delete(fornecedor);
 	}
 
-	private Fornecedor convertDTOToEntidade(FornecedorDTO fornecedorDTO) {
+	private Fornecedor fornecedorDTOtoEntity(FornecedorDTO fornecedorDTO) {
 		Fornecedor fornecedor = new Fornecedor();
 		
 		fornecedor.setBairro(fornecedorDTO.getBairro());
@@ -76,7 +76,7 @@ public class FornecedorService {
 		return fornecedor;
 	}
 
-	private FornecedorDTO converterEntidadeParaDto(Fornecedor fornecedor) {
+	private FornecedorDTO fornecedorToDTO(Fornecedor fornecedor) {
 		FornecedorDTO fornecedorDTO = new FornecedorDTO();
 
 		fornecedorDTO.setBairro(fornecedor.getBairro());
