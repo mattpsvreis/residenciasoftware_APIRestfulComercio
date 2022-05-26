@@ -27,7 +27,11 @@ public class ProdutoController {
 
 	@GetMapping
 	public ResponseEntity<List<Produto>> findAllProduto() {
-		return new ResponseEntity<>(produtoService.findAllProduto(), HttpStatus.OK);
+		if (produtoService.findAllProduto().isEmpty() == true) {
+			throw new NoSuchElementFoundException("Não há Produtos cadastrados no sistema");
+		} else {
+			return new ResponseEntity<>(produtoService.findAllProduto(), HttpStatus.OK);
+		}
 	}
 
 	@GetMapping("/dto/{id}")

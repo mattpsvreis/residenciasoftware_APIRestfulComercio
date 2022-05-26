@@ -28,7 +28,12 @@ public class FornecedorController {
 
 	@GetMapping
 	public ResponseEntity<List<Fornecedor>> findAllFornecedor() {
-		return new ResponseEntity<>(fornecedorService.findAllFornecedor(), HttpStatus.OK);
+		if (fornecedorService.findAllFornecedor().isEmpty() == true) {
+			throw new NoSuchElementFoundException("Não há Fornecedores cadastrados no sistema");
+		}
+		else {
+			return new ResponseEntity<>(fornecedorService.findAllFornecedor(), HttpStatus.OK);
+		}
 	}
 
 	@GetMapping("/dto/{id}")

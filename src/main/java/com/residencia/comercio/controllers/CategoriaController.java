@@ -27,7 +27,12 @@ public class CategoriaController {
 
 	@GetMapping
 	public ResponseEntity<List<Categoria>> findAllCategoria() {
-		return new ResponseEntity<>(categoriaService.findAllCategoria(), HttpStatus.OK);
+		if (categoriaService.findAllCategoria().isEmpty() == true) {
+			throw new NoSuchElementFoundException("Não há Categorias cadastradas no sistema");
+		}
+		else {
+			return new ResponseEntity<>(categoriaService.findAllCategoria(), HttpStatus.OK);
+		}
 	}
 
 	@GetMapping("/dto/{id}")
