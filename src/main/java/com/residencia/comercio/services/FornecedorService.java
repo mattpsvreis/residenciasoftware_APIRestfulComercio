@@ -1,10 +1,17 @@
 package com.residencia.comercio.services;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import com.residencia.comercio.dtos.CnpjDTO;
 import com.residencia.comercio.dtos.FornecedorDTO;
 import com.residencia.comercio.entities.Fornecedor;
 import com.residencia.comercio.repositories.FornecedorRepository;
@@ -23,14 +30,7 @@ public class FornecedorService {
 	}
 
 	public FornecedorDTO findFornecedorDTOById(Integer id) {
-		Fornecedor fornecedor = fornecedorRepository.findById(id).isPresent() ? fornecedorRepository.findById(id).get()
-				: null;
-
-		FornecedorDTO fornecedorDTO = new FornecedorDTO();
-		if (null != fornecedor) {
-			fornecedorDTO = fornecedorToDTO(fornecedor);
-		}
-		return fornecedorDTO;
+		return fornecedorRepository.findById(id).isPresent() ? fornecedorToDTO(fornecedorRepository.findById(id).get()) : null;		
 	}
 
 	public Fornecedor saveFornecedor(Fornecedor fornecedor) {
@@ -55,7 +55,7 @@ public class FornecedorService {
 
 	private Fornecedor fornecedorDTOtoEntity(FornecedorDTO fornecedorDTO) {
 		Fornecedor fornecedor = new Fornecedor();
-		
+
 		fornecedor.setBairro(fornecedorDTO.getBairro());
 		fornecedor.setCep(fornecedorDTO.getCep());
 		fornecedor.setCnpj(fornecedorDTO.getCnpj());
@@ -95,7 +95,45 @@ public class FornecedorService {
 		fornecedorDTO.setTelefone(fornecedor.getTelefone());
 		fornecedorDTO.setTipo(fornecedor.getTipo());
 		fornecedorDTO.setUf(fornecedor.getUf());
-		
+
 		return fornecedorDTO;
+	}
+	
+	public Fornecedor CnpjDTOtoFornecedor(CnpjDTO cnpjDTO) {
+		Fornecedor fornecedor = new Fornecedor();
+		
+		Date data = new Date();
+		try {
+			data = new SimpleDateFormat("dd/MM/yyyy").parse(cnpjDTO.getAbertura());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		fornecedor.setBairro(cnpjDTO.getBairro());
+		fornecedor.setCep(cnpjDTO.getCep());
+		fornecedor.setCnpj(cnpjDTO.getCnpj());
+		fornecedor.setComplemento(cnpjDTO.getComplemento());
+		fornecedor.setDataAbertura(data);
+		fornecedor.setEmail(cnpjDTO.getEmail());
+		fornecedor.setLogradouro(cnpjDTO.getLogradouro());
+		fornecedor.setMunicipio(cnpjDTO.getMunicipio());
+		fornecedor.setNomeFantasia(cnpjDTO.getFantasia());
+		fornecedor.setNumero(cnpjDTO.getNumero());
+		fornecedor.setRazaoSocial(cnpjDTO.getNome());
+		fornecedor.setStatusSituacao(cnpjDTO.getSituacao());
+		fornecedor.setTelefone(cnpjDTO.getTelefone());
+		fornecedor.setTipo(cnpjDTO.getTipo());
+		fornecedor.setUf(cnpjDTO.getUf());
+
+		return fornecedor;
+	}
+
+	public CnpjDTO getCnpjDTOFromExternal(String cnpj) {
+		RestTemplate restTemplate = new RestTemplate();
+		String uri = "https://www.receitaws.com.br/v1/cnpj/{cnpj}";
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("cnpj", cnpj);
+
+		return restTemplate.getForObject(uri, CnpjDTO.class, params);
 	}
 }

@@ -34,7 +34,6 @@ public class Produto {
 	@JoinColumn(name = "id_fornecedor", referencedColumnName = "id_fornecedor")
 	private Fornecedor fornecedor;
 	
-	
 	@ManyToOne
 	@JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria")
 	private Categoria categoria;

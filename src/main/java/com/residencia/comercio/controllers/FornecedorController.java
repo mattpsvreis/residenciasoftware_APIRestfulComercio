@@ -51,12 +51,10 @@ public class FornecedorController {
 		}
 	}
 
-	// Meu Deus?????
+	// Vai ser implementando futuramente para consumir API da Receita Federal!!
 	@PostMapping
 	public ResponseEntity<Fornecedor> saveFornecedor(@RequestParam String cnpj) {
-		Fornecedor fornecedor = new Fornecedor();
-		Fornecedor novoFornecedor = fornecedorService.saveFornecedor(fornecedor);
-		return new ResponseEntity<>(novoFornecedor, HttpStatus.CREATED);
+		return new ResponseEntity<>(fornecedorService.saveFornecedor(fornecedorService.CnpjDTOtoFornecedor(fornecedorService.getCnpjDTOFromExternal(cnpj))), HttpStatus.CREATED);
 	}
 
 	@PostMapping("/completo")
