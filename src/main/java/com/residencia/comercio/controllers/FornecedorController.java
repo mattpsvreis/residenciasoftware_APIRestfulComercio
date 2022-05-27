@@ -30,8 +30,7 @@ public class FornecedorController {
 	public ResponseEntity<List<Fornecedor>> findAllFornecedor() {
 		if (fornecedorService.findAllFornecedor().isEmpty() == true) {
 			throw new NoSuchElementFoundException("Não há Fornecedores cadastrados no sistema");
-		}
-		else {
+		} else {
 			return new ResponseEntity<>(fornecedorService.findAllFornecedor(), HttpStatus.OK);
 		}
 	}
@@ -45,8 +44,7 @@ public class FornecedorController {
 	public ResponseEntity<Fornecedor> findFornecedorById(@PathVariable Integer id) {
 		if (fornecedorService.findFornecedorById(id) == null) {
 			throw new NoSuchElementFoundException("Não foi encontrado Fornecedor com o id " + id);
-		}
-		else {
+		} else {
 			return new ResponseEntity<>(fornecedorService.findFornecedorById(id), HttpStatus.OK);
 		}
 	}
@@ -54,7 +52,10 @@ public class FornecedorController {
 	// Vai ser implementando futuramente para consumir API da Receita Federal!!
 	@PostMapping
 	public ResponseEntity<Fornecedor> saveFornecedor(@RequestParam String cnpj) {
-		return new ResponseEntity<>(fornecedorService.saveFornecedor(fornecedorService.CnpjDTOtoFornecedor(fornecedorService.getCnpjDTOFromExternal(cnpj))), HttpStatus.CREATED);
+		return new ResponseEntity<>(
+				fornecedorService.saveFornecedor(
+						fornecedorService.CnpjDTOtoFornecedor(fornecedorService.getCnpjDTOFromExternal(cnpj))),
+				HttpStatus.CREATED);
 	}
 
 	@PostMapping("/completo")
@@ -73,12 +74,17 @@ public class FornecedorController {
 		return new ResponseEntity<>(fornecedorService.updateFornecedor(fornecedor), HttpStatus.OK);
 	}
 
+	@PutMapping("/{id}")
+	public ResponseEntity<Fornecedor> updateAddressFornecedor(@PathVariable Integer id, @RequestParam String cep) {
+		return new ResponseEntity<>(fornecedorService.updateFornecedor(fornecedorService.updateAddressFornecedor(
+				fornecedorService.findFornecedorById(id), fornecedorService.getCepDTOFromExternal(cep))), HttpStatus.OK);
+	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteFornecedor(@PathVariable Integer id) {
 		if (fornecedorService.findFornecedorById(id) == null) {
 			return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
-		}
-		else {
+		} else {
 			fornecedorService.deleteFornecedor(id);
 			return new ResponseEntity<>("", HttpStatus.OK);
 		}

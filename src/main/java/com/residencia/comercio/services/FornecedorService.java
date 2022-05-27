@@ -1,16 +1,17 @@
 package com.residencia.comercio.services;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.residencia.comercio.dtos.CepDTO;
 import com.residencia.comercio.dtos.CnpjDTO;
 import com.residencia.comercio.dtos.FornecedorDTO;
 import com.residencia.comercio.entities.Fornecedor;
@@ -108,21 +109,23 @@ public class FornecedorService {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
-		fornecedor.setBairro(cnpjDTO.getBairro());
-		fornecedor.setCep(cnpjDTO.getCep());
+		
 		fornecedor.setCnpj(cnpjDTO.getCnpj());
-		fornecedor.setComplemento(cnpjDTO.getComplemento());
 		fornecedor.setDataAbertura(data);
 		fornecedor.setEmail(cnpjDTO.getEmail());
-		fornecedor.setLogradouro(cnpjDTO.getLogradouro());
-		fornecedor.setMunicipio(cnpjDTO.getMunicipio());
 		fornecedor.setNomeFantasia(cnpjDTO.getFantasia());
-		fornecedor.setNumero(cnpjDTO.getNumero());
 		fornecedor.setRazaoSocial(cnpjDTO.getNome());
 		fornecedor.setStatusSituacao(cnpjDTO.getSituacao());
 		fornecedor.setTelefone(cnpjDTO.getTelefone());
 		fornecedor.setTipo(cnpjDTO.getTipo());
+		
+		fornecedor.setCep(cnpjDTO.getCep());
+		fornecedor.setNumero(cnpjDTO.getNumero());
+		
+		fornecedor.setLogradouro(cnpjDTO.getLogradouro());
+		fornecedor.setBairro(cnpjDTO.getBairro());
+		fornecedor.setComplemento(cnpjDTO.getComplemento());
+		fornecedor.setMunicipio(cnpjDTO.getMunicipio());
 		fornecedor.setUf(cnpjDTO.getUf());
 
 		return fornecedor;
@@ -135,5 +138,25 @@ public class FornecedorService {
 		params.put("cnpj", cnpj);
 
 		return restTemplate.getForObject(uri, CnpjDTO.class, params);
+	}
+	
+	public Fornecedor updateAddressFornecedor(Fornecedor fornecedor, CepDTO cepDTO) {
+		fornecedor.setLogradouro(cepDTO.getLogradouro());
+		fornecedor.setBairro(cepDTO.getBairro());
+		fornecedor.setComplemento(cepDTO.getComplemento());
+		fornecedor.setMunicipio(cepDTO.getLocalidade());
+		fornecedor.setUf(cepDTO.getUf());
+		fornecedor.setCep(cepDTO.getCep());
+		
+		return fornecedor;
+	}
+	
+	public CepDTO getCepDTOFromExternal(String cep) {
+		RestTemplate restTemplate = new RestTemplate();
+		String uri = "https://viacep.com.br/ws/{cep}/json/";
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("cep", cep);
+
+		return restTemplate.getForObject(uri, CepDTO.class, params);
 	}
 }
