@@ -1,10 +1,18 @@
 package com.residencia.comercio.services;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.residencia.comercio.dtos.ProdutoDTO;
 import com.residencia.comercio.entities.Produto;
 import com.residencia.comercio.repositories.CategoriaRepository;
@@ -22,6 +30,9 @@ public class ProdutoService {
 	
 	@Autowired
 	FornecedorRepository fornecedorRepository;
+	
+	@Value("${files.folder.path}")
+	private Path path;
 
 	public List<Produto> findAllProduto() {
 		return produtoRepository.findAll();
@@ -39,6 +50,36 @@ public class ProdutoService {
 		return produtoRepository.save(produto);
 	}
 
+	public Produto saveProdutoWithImage(String produto, MultipartFile file) {
+		Produto newProduto = new Produto();
+		
+		try {
+			ObjectMapper objMapper = new ObjectMapper();
+			newProduto = objMapper.readValue(produto, Produto.class);
+		} catch (IOException e) {
+			System.out.println("Erro de conversão");
+			e.printStackTrace();
+		}
+		
+		Produto produtoSaved = produtoRepository.save(newProduto);
+		
+		String filename = produtoSaved.getIdProduto()+"."+StringUtils.cleanPath(file.getOriginalFilename());
+		
+		try {
+			Files.copy(file.getInputStream(), path.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			produtoSaved.setImagemProduto(path.resolve(filename).toRealPath().toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return produtoRepository.save(produtoSaved);
+	}
+	
 	public Produto saveProdutoDTO(ProdutoDTO produtoDTO) {
 		return produtoRepository.save(produtoDTOtoEntity(produtoDTO));
 	}

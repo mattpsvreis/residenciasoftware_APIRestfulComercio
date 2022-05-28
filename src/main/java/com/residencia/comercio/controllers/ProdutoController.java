@@ -2,8 +2,11 @@ package com.residencia.comercio.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.residencia.comercio.dtos.ProdutoDTO;
 import com.residencia.comercio.entities.Produto;
@@ -49,8 +54,15 @@ public class ProdutoController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Produto> saveProduto(@RequestBody Produto produto) {
+	public ResponseEntity<Produto> saveProduto(@Valid @RequestBody Produto produto) {
 		return new ResponseEntity<>(produtoService.saveProduto(produto), HttpStatus.CREATED);
+	}
+
+	@PostMapping(value = "/com-foto", consumes = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<Produto> saveProdutoWithImage(@RequestPart("produto") String produto,
+			@RequestPart("file") MultipartFile file) {
+		return new ResponseEntity<>(produtoService.saveProdutoWithImage(produto, file), HttpStatus.CREATED);
 	}
 
 	@PostMapping("/dto")

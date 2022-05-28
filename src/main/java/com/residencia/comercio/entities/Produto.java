@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -17,23 +18,27 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "produto")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idProduto")
 public class Produto {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_produto")
 	private Integer idProduto;
-	
-	@Column(name= "sku")
+
+	@NotBlank(message = "O SKU do produto não pode estar vazio.")
+	@Column(name = "sku")
 	private String sku;
-	
+
 	@Column(name = "nome_produto")
 	@NotEmpty(message = "O nome do produto não pode ficar em branco.")
 	private String nomeProduto;
-	
+
+	@Column(name = "imagem")
+	private String imagemProduto;
+
 	@ManyToOne
 	@JoinColumn(name = "id_fornecedor", referencedColumnName = "id_fornecedor")
 	private Fornecedor fornecedor;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria")
 	private Categoria categoria;
@@ -60,6 +65,14 @@ public class Produto {
 
 	public void setNomeProduto(String nomeProduto) {
 		this.nomeProduto = nomeProduto;
+	}
+
+	public String getImagemProduto() {
+		return imagemProduto;
+	}
+
+	public void setImagemProduto(String imagemProduto) {
+		this.imagemProduto = imagemProduto;
 	}
 
 	public Fornecedor getFornecedor() {
