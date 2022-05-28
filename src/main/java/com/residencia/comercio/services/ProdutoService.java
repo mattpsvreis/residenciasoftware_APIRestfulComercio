@@ -9,7 +9,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -63,7 +62,7 @@ public class ProdutoService {
 		
 		Produto produtoSaved = produtoRepository.save(newProduto);
 		
-		String filename = produtoSaved.getIdProduto()+"."+StringUtils.cleanPath(file.getOriginalFilename());
+		String filename = "produto."+produtoSaved.getIdProduto()+".image.png";
 		
 		try {
 			Files.copy(file.getInputStream(), path.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
