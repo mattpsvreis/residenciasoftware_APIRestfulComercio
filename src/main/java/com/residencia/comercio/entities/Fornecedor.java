@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -16,14 +19,14 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "fornecedor")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idFornecedor")
 public class Fornecedor {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_fornecedor")
 	private Integer idFornecedor;
 
 	@Column(name = "cnpj")
-//	@NotEmpty(message = "O número do CNPJ não pode ficar em branco.")
-//	@Digits(message="O CNPJ deve conter 14 números.", fraction = 0, integer = 14)
+	@NotEmpty(message = "O número do CNPJ não pode ficar em branco.")
 	private String cnpj;
 
 	@Column(name = "tipo")
@@ -39,6 +42,7 @@ public class Fornecedor {
 	private String telefone;
 
 	@Column(name = "email")
+	@Pattern(regexp = "^.+@.+\\..+$", message = "Email inválido.")
 	private String email;
 
 	@Column(name = "nome_fantasia")
@@ -66,6 +70,7 @@ public class Fornecedor {
 	private String municipio;
 
 	@Column(name = "data_abertura")
+	@Past(message = "Data de abertura do Fornecedor não pode ser no futuro.")
 	private Date dataAbertura;
 
 	// @OneToMany(mappedBy = "fornecedor")

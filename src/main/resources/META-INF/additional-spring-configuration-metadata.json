@@ -1,5 +1,12 @@
-{"properties": [{
-  "name": "files.folder.path",
-  "type": "java.lang.String",
-  "description": "Define caminho padrão para leitura e escrita de arquivos."
-}]}
+{"properties": [
+  {
+    "name": "files.folder.path",
+    "type": "java.lang.String",
+    "description": "Define caminho padrão para leitura e escrita de arquivos."
+  },
+  {
+    "name": "springdoc.version",
+    "type": "java.lang.String",
+    "description": "Define a versão da API."
+  }
+]}

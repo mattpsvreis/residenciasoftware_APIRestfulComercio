@@ -159,4 +159,13 @@ public class FornecedorService {
 
 		return restTemplate.getForObject(uri, CepDTO.class, params);
 	}
+	
+	public boolean CNPJValidFormatted(String cnpj) {
+		if (cnpj.charAt(2) != '.' || cnpj.charAt(6) != '.' || cnpj.charAt(10) != '/' || cnpj.charAt(15) != '-' || cnpj.length() != 18) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
 }

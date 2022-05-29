@@ -24,8 +24,8 @@ public class Produto {
 	@Column(name = "id_produto")
 	private Integer idProduto;
 
-	@NotBlank(message = "O SKU do produto não pode estar vazio.")
 	@Column(name = "sku")
+	@NotBlank(message = "O SKU do produto não pode estar vazio.")
 	private String sku;
 
 	@Column(name = "nome_produto")
