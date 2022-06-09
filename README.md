@@ -1,4 +1,4 @@
-# API Restful Fornecedor
+# API Restful Comércio
 API REST utilizando Spring Boot e recursos como validação, consumo de api's externas, entre outros.
 
 ## Descrição
